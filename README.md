@@ -58,6 +58,9 @@ $ npm run dev       # Start webpack in "watch" mode so that the assets are autom
                     # You are now able to activate the plugin in your WordPress backend
 ```
 
+#### Generate CLI preview (npm run create)
+![generate cli](https://image.prntscr.com/image/z61WDD8RQ3GJ3Bp4pZ-ElQ.png)
+
 ## :book: Boilerplate Documentation
 This boilerplate is a fork of [matzeeable/wp-reactjs-starter](https://github.com/matzeeable/wp-reactjs-starter). You can find the whole documentation [here](https://github.com/matzeeable/wp-reactjs-starter/blob/master/README.md).
 
