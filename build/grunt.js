@@ -138,6 +138,10 @@ module.exports = function(grunt) {
                     message: 'Step 9 / 14: Minimum WordPress version (minimum of 4.4 required for the boilerplate)',
                     default: '4.4.0'
                 },
+                minRML: {
+                    message: '... Interposed question: Minimum Real Media Library version',
+                    default: '3.0.0'
+                },
                 namespace: {
                     description: 'Step 10 / 14: PHP file namespace prefix (example: MatthiasWeb\\WPRJSS)',
                     pattern: /^[^ ]+$/,
@@ -214,7 +218,7 @@ module.exports = function(grunt) {
                 cwd: './inc'
             }, "**/*"), parseOldConstant = function(constant) {
                 return 'WPRJSS' + constant.slice(result.constantPrefix.length);
-            }, functions = ['wprjss_skip_php_admin_notice', 'wprjss_skip_wp_admin_notice', 'wprjss_skip_rest_admin_notice'];
+            }, functions = ['wprjss_skip_php_admin_notice', 'wprjss_skip_wp_admin_notice', 'wprjss_skip_rest_admin_notice', 'wprjss_skip_rml_admin_notice'];
             _.each(files, function(_file) {
                 file = './inc/' + _file;
                 if (grunt.file.isFile(file)) {

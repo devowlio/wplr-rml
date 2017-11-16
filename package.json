@@ -1,14 +1,14 @@
 {
-  "name": "wp-reactjs-boilerplate",
+  "name": "wp-real-media-library-add-on",
   "version": "0.1.0",
-  "description": "WordPress Plugin Boilerplate using new web technologies.",
+  "description": "WordPress Real Media Library Add-On Boilerplate using new web technologies.",
   "author": "Matthias Günter <support@matthias-web.com>",
   "license": "MIT",
   "private": "true",
-  "homepage": "https://matthias-web.com",
+  "homepage": "https://matthias-web.com/wordpress/real-media-library",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matzeeable/wp-reactjs-starter"
+    "url": "https://github.com/matzeeable/wp-real-media-library-add-on"
   },
   "apidoc": {
     "sampleUrl": "/wp-json"

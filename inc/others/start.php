@@ -18,8 +18,14 @@ if (version_compare($wp_version, WPRJSS_MIN_WP, '>=')) {
     
     // Load core
     if ($load_core) {
-        require_once(WPRJSS_INC . 'general/Core.class.php');
-        call_user_func(array(WPRJSS_NS . '\\general\\Core', 'getInstance'));
+        // Check Real Media Library version
+        if (defined('RML_VERSION') && version_compare(RML_VERSION, WPRJSS_MIN_RML, '>=')) {
+            require_once(WPRJSS_INC . 'general/Core.class.php');
+            call_user_func(array(WPRJSS_NS . '\\general\\Core', 'getInstance'));
+        }else{
+            // WP Real Media Library version not reached
+            require_once(WPRJSS_INC . 'others/fallback-rml.php');
+        }
     }else{
         // WP REST API version not reached
         require_once(WPRJSS_INC . 'others/fallback-rest-api.php');

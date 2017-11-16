@@ -1,9 +1,9 @@
 <?php
 /**
  * @wordpress-plugin
- * Plugin Name: 	WP ReactJS Starter
- * Plugin URI:		https://matthias-web.com/wordpress
- * Description: 	This WordPress plugin demonstrates how to setup a plugin that uses React and ES6 in a WordPress plugin.
+ * Plugin Name: 	WP Real Media Library Add-On Starter
+ * Plugin URI:		https://matthias-web.com/wordpress/real-media-library
+ * Description: 	This WordPress plugin demonstrates how to setup a plugin that uses React and ES6 in a WordPress plugin especially for Real Media Library Add-On development.
  * Author:			Matthias Guenter
  * Version: 		0.1.0
  * Author URI:		https://matthias-web.com
@@ -23,6 +23,7 @@ define('WPRJSS_PATH', dirname(WPRJSS_FILE));
 define('WPRJSS_INC', trailingslashit(path_join(WPRJSS_PATH, 'inc')));
 define('WPRJSS_MIN_PHP', '5.3.0'); // Minimum of PHP 5.3 required for autoloading and namespacing
 define('WPRJSS_MIN_WP', '4.4.0'); // Minimum of WordPress 4.4 required
+define('WPRJSS_MIN_RML', '3.0.0'); // Minimum version of Real Media Library
 define('WPRJSS_NS', 'MatthiasWeb\\WPRJSS');
 define('WPRJSS_DB_PREFIX', 'wprjss'); // The table name prefix wp_{prefix}
 define('WPRJSS_OPT_PREFIX', 'wprjss'); // The option name prefix in wp_options
