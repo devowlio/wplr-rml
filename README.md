@@ -61,6 +61,9 @@ $ npm run dev       # Start webpack in "watch" mode so that the assets are autom
 ## :book: Boilerplate Documentation
 This boilerplate is a fork of [matzeeable/wp-reactjs-starter](https://github.com/matzeeable/wp-reactjs-starter). You can find the whole documentation [here](https://github.com/matzeeable/wp-reactjs-starter/blob/master/README.md).
 
+#### Addition
+In every `base\Base` child class implementation you can use the method `rmlVersionReached()` to check if Real Media Library is available and the minimum version is reached.
+
 ## :electric_plug: Extend Real Media Library.
 Just check out the API Documentation of Real Media Library [here](https://matthias-web.com/wordpress/real-media-library/documentation/).
 

@@ -34,7 +34,10 @@ class Core extends base\Core {
     protected function __construct() {
         parent::__construct();
         
-        // Register all your before init hooks here
+        // Register all your before init hooks here.
+        // Note: At this point isn't sure if RML is installed and the min version is reached.
+        // It is not recommenend to use base\Base::rmlVersionReached() here, you should use it in
+        // all your hooks implementations.
         add_action('widgets_init', array($this, 'widgets_init'));
     }
     
@@ -43,6 +46,13 @@ class Core extends base\Core {
      * it should register all hooks to have them in one place.
      */
     public function init() {
+        // Check if min Real Media Library version is reached...
+        if (!$this->rmlVersionReached()) {
+            // WP Real Media Library version not reached
+            require_once(WPRJSS_INC . 'others/fallback-rml.php');
+            return;
+        }
+        
         // Install database tables if necessery
         $this->updateDbCheck();
         
@@ -59,9 +69,11 @@ class Core extends base\Core {
 	 * Register widgets.
 	 */
 	public function widgets_init() {
-	    register_widget(WPRJSS_NS . '\\widget\\Widget');
+	    if ($this->rmlVersionReached()) {
+	        register_widget(WPRJSS_NS . '\\widget\\Widget');
+	    }
 	}
-    
+	
     /**
      * Get the service.
      * 

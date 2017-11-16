@@ -8,6 +8,15 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file
  */
 abstract class Base {
     /**
+	 * Checks if the minimum version of Real Media Library is reached.
+	 * 
+	 * @returns boolean
+	 */
+	public function rmlVersionReached() {
+	    return defined('RML_VERSION') && version_compare(RML_VERSION, WPRJSS_MIN_RML, '>=');
+	}
+    
+    /**
      * Simple-to-use error_log debug log. This debug is only outprintted when
      * you define WPRJSS_DEBUG=true constant in wp-config.php 
      * 
