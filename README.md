@@ -3,7 +3,6 @@
 
 ---
 
-[![Github All Releases](https://img.shields.io/github/downloads/matzeeable/wp-real-media-library-add-on/total.svg?colorB=green)](https://github.com/matzeeable/wp-real-media-library-add-on) 
 [![GitHub tag](https://img.shields.io/github/tag/matzeeable/wp-real-media-library-add-on.svg?colorB=green)](https://github.com/matzeeable/wp-real-media-library-add-on) 
 [![license](https://img.shields.io/github/license/matzeeable/wp-real-media-library-add-on.svg?colorB=green)](https://github.com/matzeeable/wp-real-media-library-add-on/blob/master/LICENSE) 
 [![Slack channel](https://img.shields.io/badge/Slack-join-green.svg)](https://matthiasweb.signup.team/)
