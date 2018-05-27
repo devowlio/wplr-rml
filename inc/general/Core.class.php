@@ -38,6 +38,9 @@ class Core extends base\Core {
         // Note: At this point isn't sure if RML is installed and the min version is reached.
         // It is not recommenend to use base\Base::rmlVersionReached() here, you should use it in
         // all your hooks implementations.
+        
+        // Register all your before init hooks here
+        add_action('plugins_loaded', array($this, 'updateDbCheck'));
         add_action('widgets_init', array($this, 'widgets_init'));
     }
     
@@ -52,9 +55,6 @@ class Core extends base\Core {
             require_once(WPRJSS_INC . 'others/fallback-rml.php');
             return;
         }
-        
-        // Install database tables if necessery
-        $this->updateDbCheck();
         
         $this->service = new rest\Service();
         
