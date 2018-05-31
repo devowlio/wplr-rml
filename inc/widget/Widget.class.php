@@ -1,7 +1,7 @@
 <?php
-namespace MatthiasWeb\WPRJSS\widget;
-use MatthiasWeb\WPRJSS\base;
-use MatthiasWeb\WPRJSS\general;
+namespace MatthiasWeb\RealMediaLibrary\WPLR\widget;
+use MatthiasWeb\RealMediaLibrary\WPLR\base;
+use MatthiasWeb\RealMediaLibrary\WPLR\general;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -14,7 +14,7 @@ class Widget extends \WP_Widget {
 		$widget_ops = array(
 			'description' => 'A widget that demonstrates using React.'
 		);
-		parent::__construct( WPRJSS_TD . 'react-demo', 'React Demo Widget', $widget_ops);
+		parent::__construct( WPLR_RML_TD . 'react-demo', 'React Demo Widget', $widget_ops);
 	}
 
 	public function widget($args, $instance) {

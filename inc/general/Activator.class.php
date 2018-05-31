@@ -1,6 +1,6 @@
 <?php
-namespace MatthiasWeb\WPRJSS\general;
-use MatthiasWeb\WPRJSS\base;
+namespace MatthiasWeb\RealMediaLibrary\WPLR\general;
+use MatthiasWeb\RealMediaLibrary\WPLR\base;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -68,7 +68,7 @@ class Activator extends base\Base {
     	}
     	
     	if ($installThisCallable === null) {
-    		update_option( WPRJSS_OPT_PREFIX . '_db_version', WPRJSS_VERSION );
+    		update_option( WPLR_RML_OPT_PREFIX . '_db_version', WPLR_RML_VERSION );
     	}
     }
 }

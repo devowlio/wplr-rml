@@ -1,5 +1,5 @@
 <?php
-namespace MatthiasWeb\WPRJSS\base;
+namespace MatthiasWeb\RealMediaLibrary\WPLR\base;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -35,7 +35,7 @@ abstract class Assets extends Base {
     /**
      * Registers the script if $src provided (does NOT overwrite), and enqueues it. Use this wrapper
      * method instead of wp_enqueue_script if you want to use the cachebuster for the given src. If the
-     * src is not found in the cachebuster (inc/others/cachebuster.php) it falls back to WPRJSS_VERSION.
+     * src is not found in the cachebuster (inc/others/cachebuster.php) it falls back to WPLR_RML_VERSION.
      * 
      * @param string $handle Name of the script. Should be unique.
      * @param string $src The src relative to public/dist or public/dev folder (when $isLib is false)
@@ -46,7 +46,7 @@ abstract class Assets extends Base {
      */
     public function enqueueScript($handle, $src = '', $deps = array(), $in_footer = false, $isLib = false) {
         $src = $this->getPublicFolder($isLib) . $src;
-        wp_enqueue_script($handle, plugins_url($src, WPRJSS_FILE), array(), $this->getCachebusterVersion($src, $isLib), true);
+        wp_enqueue_script($handle, plugins_url($src, WPLR_RML_FILE), array(), $this->getCachebusterVersion($src, $isLib), true);
     }
     
     /**
@@ -61,7 +61,7 @@ abstract class Assets extends Base {
     /**
      * Enqueue a CSS stylesheet. Use this wrapper method instead of wp_enqueue_style if you want 
      * to use the cachebuster for the given src. If the src is not found in the cachebuster (inc/others/cachebuster.php)
-     * it falls back to WPRJSS_VERSION.
+     * it falls back to WPLR_RML_VERSION.
      * 
      * @param string $handle Name of the style. Should be unique.
      * @param string $src The src relative to public/dist or public/dev folder (when $isLib is false)
@@ -72,7 +72,7 @@ abstract class Assets extends Base {
      */
     public function enqueueStyle($handle, $src = '', $deps = array(), $media = 'all', $isLib = false) {
         $src = $this->getPublicFolder($isLib) . $src;
-        wp_enqueue_style($handle, plugins_url($src, WPRJSS_FILE), array(), $this->getCachebusterVersion($src, $isLib), $media);
+        wp_enqueue_style($handle, plugins_url($src, WPLR_RML_FILE), array(), $this->getCachebusterVersion($src, $isLib), $media);
     }
     
     /**
@@ -91,11 +91,11 @@ abstract class Assets extends Base {
      * @param string $src The src relative to public/ folder
      * @param boolean $isLib If true the cachebuster-lib.php cachebuster is used
      * @see inc/others/cachebuster.php
-     * @returns string WPRJSS_VERSION or cachebuster timestamp
+     * @returns string WPLR_RML_VERSION or cachebuster timestamp
      */
     public function getCachebusterVersion($src, $isLib = false) {
-        $default = WPRJSS_VERSION;
-        $path = WPRJSS_INC . 'others/';
+        $default = WPLR_RML_VERSION;
+        $path = WPLR_RML_INC . 'others/';
         $path_lib = $path . 'cachebuster-lib.php';
         $path = $path . 'cachebuster.php';
         if ($isLib) {
@@ -141,7 +141,7 @@ abstract class Assets extends Base {
      * @see getPublicFolder()
      */
     public function getPluginsUrl($asset, $isLib = false) {
-        return plugins_url($this->getPublicFolder($isLib) . $asset, WPRJSS_FILE);
+        return plugins_url($this->getPublicFolder($isLib) . $asset, WPLR_RML_FILE);
     }
     
     /**

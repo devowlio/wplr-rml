@@ -1,7 +1,7 @@
 <?php
-namespace MatthiasWeb\WPRJSS\menu;
-use MatthiasWeb\WPRJSS\base;
-use MatthiasWeb\WPRJSS\general;
+namespace MatthiasWeb\RealMediaLibrary\WPLR\menu;
+use MatthiasWeb\RealMediaLibrary\WPLR\base;
+use MatthiasWeb\RealMediaLibrary\WPLR\general;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -15,12 +15,12 @@ class Page extends base\Base {
             $pluginName,
             $pluginName,
             'manage_options',
-            'wp-react-component-library',
+            'wplr_rml-wp-react-component-library',
             array($this, 'render_component_library')
 		);
     }
     
     public function render_component_library() {
-		echo '<div id="wp-react-component-library" class="wrap"></div>';
+		echo '<div id="wplr_rml-wp-react-component-library" class="wrap"></div>';
 	}
 }

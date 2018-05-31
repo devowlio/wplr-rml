@@ -1,14 +1,14 @@
 <?php
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
-if (!function_exists('wprjss_skip_rest_admin_notice')) {
+if (!function_exists('wplr_rml_skip_rest_admin_notice')) {
 	/**
 	 * Show an admin notice to administrators when the minimum WP version
 	 * could not be reached. The error message is only in english available.
 	 */
-    function wprjss_skip_rest_admin_notice() {
+    function wplr_rml_skip_rest_admin_notice() {
         if (current_user_can('install_plugins')) {
-        	extract(get_plugin_data(WPRJSS_FILE, true, false));
+        	extract(get_plugin_data(WPLR_RML_FILE, true, false));
         	global $wp_version;
         	echo '<div class=\'notice notice-error\'>
 				<p><strong>' . $Name . '</strong> could not be initialized because you are running WordPress < 4.7 (' . $wp_version . '). If WordPress < 4.7 the plugin needs another plugin <strong>WordPress REST API (Version 2)</strong> to provide needed functionality.
@@ -18,4 +18,4 @@ if (!function_exists('wprjss_skip_rest_admin_notice')) {
         }
     }
 }
-add_action('admin_notices', 'wprjss_skip_rest_admin_notice');
+add_action('admin_notices', 'wplr_rml_skip_rest_admin_notice');

@@ -1,14 +1,14 @@
 <?php
-namespace MatthiasWeb\WPRJSS\general;
-use MatthiasWeb\WPRJSS\base;
-use MatthiasWeb\WPRJSS\menu;
-use MatthiasWeb\WPRJSS\rest;
-use MatthiasWeb\WPRJSS\widget;
+namespace MatthiasWeb\RealMediaLibrary\WPLR\general;
+use MatthiasWeb\RealMediaLibrary\WPLR\base;
+use MatthiasWeb\RealMediaLibrary\WPLR\menu;
+use MatthiasWeb\RealMediaLibrary\WPLR\rest;
+use MatthiasWeb\RealMediaLibrary\WPLR\widget;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
 // Include files, where autoloading is not possible, yet
-require_once(WPRJSS_INC . 'base/Core.class.php');
+require_once(WPLR_RML_INC . 'base/Core.class.php');
 
 /**
  * Singleton core class which handles the main system for plugin. It includes
@@ -52,7 +52,7 @@ class Core extends base\Core {
         // Check if min Real Media Library version is reached...
         if (!$this->rmlVersionReached()) {
             // WP Real Media Library version not reached
-            require_once(WPRJSS_INC . 'others/fallback-rml.php');
+            require_once(WPLR_RML_INC . 'others/fallback-rml.php');
             return;
         }
         
@@ -70,7 +70,7 @@ class Core extends base\Core {
 	 */
 	public function widgets_init() {
 	    if ($this->rmlVersionReached()) {
-	        register_widget(WPRJSS_NS . '\\widget\\Widget');
+	        register_widget(WPLR_RML_NS . '\\widget\\Widget');
 	    }
 	}
 	

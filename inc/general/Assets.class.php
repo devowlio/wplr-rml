@@ -1,7 +1,7 @@
 <?php
-namespace MatthiasWeb\WPRJSS\general;
-use MatthiasWeb\WPRJSS\base;
-use MatthiasWeb\WPRJSS\rest;
+namespace MatthiasWeb\RealMediaLibrary\WPLR\general;
+use MatthiasWeb\RealMediaLibrary\WPLR\base;
+use MatthiasWeb\RealMediaLibrary\WPLR\rest;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -29,12 +29,12 @@ class Assets extends base\Assets {
         
         // Your assets implementation here... See base\Assets for enqueue* methods.
         if ($type === base\Assets::TYPE_ADMIN) {
-            $this->enqueueScript('wp-reactjs-starter', 'admin.js', array('react-dom'));
-		    $this->enqueueStyle('wp-reactjs-starter', 'admin.css');
-		    wp_localize_script('wp-reactjs-starter', 'wprjssOpts', $this->adminLocalizeScript());
+            $this->enqueueScript('wplr-rml', 'admin.js', array('react-dom'));
+		    $this->enqueueStyle('wplr-rml', 'admin.css');
+		    wp_localize_script('wplr-rml', 'wplr_rmlOpts', $this->adminLocalizeScript());
         }else{
-            $this->enqueueScript('wp-reactjs-starter', 'widget.js', array('react-dom'));
-            $this->enqueueStyle('wp-reactjs-starter', 'widget.css');
+            $this->enqueueScript('wplr-rml', 'widget.js', array('react-dom'));
+            $this->enqueueStyle('wplr-rml', 'widget.css');
         }
     }
     
@@ -45,7 +45,7 @@ class Assets extends base\Assets {
      */
     public function adminLocalizeScript() {
         return array(
-            'textDomain' => WPRJSS_TD,
+            'textDomain' => WPLR_RML_TD,
             'restUrl' => rest\Service::getUrl(rest\Service::SERVICE_NAMESPACE)
         );
     }

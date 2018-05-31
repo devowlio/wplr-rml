@@ -1,7 +1,7 @@
 <?php
-namespace MatthiasWeb\WPRJSS\rest;
-use MatthiasWeb\WPRJSS\base;
-use MatthiasWeb\WPRJSS\general;
+namespace MatthiasWeb\RealMediaLibrary\WPLR\rest;
+use MatthiasWeb\RealMediaLibrary\WPLR\base;
+use MatthiasWeb\RealMediaLibrary\WPLR\general;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -15,7 +15,7 @@ class Service extends base\Base {
      * 
      * @see Service::getUrl()
      */
-    const SERVICE_NAMESPACE = 'wprjss/v1';
+    const SERVICE_NAMESPACE = 'wplr-rml/v1';
     
     /**
      * Register endpoints.
