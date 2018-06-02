@@ -47,16 +47,14 @@ class Activator extends base\Base {
     	// Table wp_wprjss
     	if ($installThisCallable === null) {
     	    // Your table installation here...
-    	    $table_name = $this->getTableName();
-    		/*$sql = "CREATE TABLE $table_name (
-    			id mediumint(9) NOT NULL AUTO_INCREMENT,
-    			UNIQUE KEY id (id)
-    		) $charset_collate;";
-    		dbDelta( $sql );
-    		
-    		if ($errorlevel) {
-    			$wpdb->print_error();
-    		}*/
+    	    if ($this->rmlVersionReached()) {
+    	        // Add 'wplr_id' to realmedialibrary table
+    	        $table_name = $this->getTableName("", true);
+    	        $row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$table_name' AND column_name = 'wplr_id';");
+            	if (empty($row)) {
+            		$wpdb->query("ALTER TABLE $table_name ADD wplr_id INT(11) DEFAULT NULL");
+            	}
+    	    }
     	}else{
     		call_user_func($installThisCallable);
     	}
@@ -67,7 +65,7 @@ class Activator extends base\Base {
     		error_reporting($errorLevel);
     	}
     	
-    	if ($installThisCallable === null) {
+    	if ($installThisCallable === null && $this->rmlVersionReached()) {
     		update_option( WPLR_RML_OPT_PREFIX . '_db_version', WPLR_RML_VERSION );
     	}
     }

@@ -1,5 +1,5 @@
 {
-  "name": "wp-real-media-library-add-on",
+  "name": "wplr-rml",
   "version": "0.1.0",
   "description": "WordPress Real Media Library Add-On Boilerplate using new web technologies.",
   "author": "Matthias Günter <support@matthias-web.com>",
@@ -8,7 +8,7 @@
   "homepage": "https://matthias-web.com/wordpress/real-media-library",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matzeeable/wp-real-media-library-add-on"
+    "url": "https://github.com/matzeeable/wplr-rml"
   },
   "apidoc": {
     "sampleUrl": "/wp-json"
@@ -29,10 +29,7 @@
     "hookdocs": "rm -rf docs/hooks && ./node_modules/.bin/jsdoc inc -c build/hookdoc.json",
     "docs": "npm run phpdocs && npm run jsdocs && npm run apidocs && npm run hookdocs"
   },
-  "dependencies": {
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2"
-  },
+  "dependencies": {},
   "engines": {
     "node": ">=0.8"
   },

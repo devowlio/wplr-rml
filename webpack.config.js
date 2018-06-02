@@ -8,7 +8,6 @@ var path = require( 'path' ),
 module.exports = {
 	mode: NODE_ENV,
 	entry: {
-		widget: './public/src/widget.js',
 		admin: './public/src/admin.js'
 	},
 	output: {
@@ -17,7 +16,18 @@ module.exports = {
 	},
 	externals: {
 		'react': 'React',
-		'react-dom': 'ReactDOM'
+		'react-dom': 'ReactDOM',
+		'jquery': 'jQuery',
+		'immer': 'immer',
+		'i18n-react': 'window[\'i18n-react\']',
+		'react-aiot': 'ReactAIOT',
+		'mobx': 'mobx',
+		'mobx-state-tree': 'mobxStateTree',
+		'rml': 'rml',
+		'rmlopts': 'rmlOpts',
+		'wp': 'wp',
+		'_': '_',
+		'wpApiSettings': 'wpApiSettings'
 	},
 	devtool: '#source-map',
 	module: {

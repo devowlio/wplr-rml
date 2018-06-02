@@ -19,23 +19,9 @@ class Assets extends base\Assets {
      * @param string $type The type (see base\Assets constants)
      */
     public function enqueue_scripts_and_styles($type) {
-        $publicFolder = $this->getPublicFolder();
-        $isDebug = $this->isScriptDebug();
-        $dpSuffix = $isDebug ? 'development' : 'production.min';
-        
-        // Both in admin interface (page) and frontend (widgets)
-        $this->enqueueLibraryScript('react', 'react/umd/react.' . $dpSuffix . '.js');
-        $this->enqueueLibraryScript('react-dom', 'react-dom/umd/react-dom.' . $dpSuffix . '.js', 'react');
-        
-        // Your assets implementation here... See base\Assets for enqueue* methods.
-        if ($type === base\Assets::TYPE_ADMIN) {
-            $this->enqueueScript('wplr-rml', 'admin.js', array('react-dom'));
-		    $this->enqueueStyle('wplr-rml', 'admin.css');
-		    wp_localize_script('wplr-rml', 'wplr_rmlOpts', $this->adminLocalizeScript());
-        }else{
-            $this->enqueueScript('wplr-rml', 'widget.js', array('react-dom'));
-            $this->enqueueStyle('wplr-rml', 'widget.css');
-        }
+        $this->enqueueScript('wplr-rml', 'admin.js', array('react-dom'));
+	    //$this->enqueueStyle('wplr-rml', 'admin.css');
+	    wp_localize_script('wplr-rml', 'wplr_rmlOpts', $this->adminLocalizeScript());
     }
     
     /**

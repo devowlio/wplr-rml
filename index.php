@@ -31,5 +31,10 @@ define('WPLR_RML_OPT_PREFIX', 'wplr_rml'); // The option name prefix in wp_optio
 //define('WPLR_RML_VERSION', ''); This constant is defined in the core class
 //define('WPLR_RML_DEBUG', true); This constant should be defined in wp-config.php to enable the Base::debug() method
 
+// Folder types
+define('WPLR_RML_TYPE_ROOT', 10);
+define('WPLR_RML_TYPE_COLLECTION', 11);
+define('WPLR_RML_TYPE_FOLDER', 12);
+
 // Check PHP Version and print notice if minimum not reached, otherwise start the plugin core
 require_once(WPLR_RML_INC . "others/" . (version_compare(phpversion(), WPLR_RML_MIN_PHP, ">=") ? "start.php" : "phpfallback.php"));

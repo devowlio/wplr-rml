@@ -15,6 +15,15 @@ abstract class Base {
 	public function rmlVersionReached() {
 	    return defined('RML_VERSION') && version_compare(RML_VERSION, WPLR_RML_MIN_RML, '>=');
 	}
+	
+	/**
+	 * Check if WPLR plugin is installed.
+	 * 
+	 * @returns boolean
+	 */
+	public function wplrInstalled() {
+	    return class_exists('Meow_WPLR_Sync_Core');
+	}
     
     /**
      * Simple-to-use error_log debug log. This debug is only outprintted when
@@ -34,10 +43,11 @@ abstract class Base {
      * Get a plugin relevant table name depending on the WPLR_RML_DB_PREFIX constant.
      * 
      * @param string $name Append this name to the plugins relevant table with _{$name}.
+     * @param boolean $isRml If true the realmedialibrary prefix is used
      * @returns string
      */
-    public function getTableName($name = "") {
+    public function getTableName($name = "", $isRml = false) {
         global $wpdb;
-        return $wpdb->prefix . WPLR_RML_DB_PREFIX . (($name == "") ? "" : "_" . $name);
+        return $wpdb->prefix . ($isRml ? 'realmedialibrary' : WPLR_RML_DB_PREFIX) . (($name == "") ? "" : "_" . $name);
     }
 }

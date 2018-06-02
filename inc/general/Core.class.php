@@ -1,9 +1,8 @@
 <?php
 namespace MatthiasWeb\RealMediaLibrary\WPLR\general;
 use MatthiasWeb\RealMediaLibrary\WPLR\base;
-use MatthiasWeb\RealMediaLibrary\WPLR\menu;
 use MatthiasWeb\RealMediaLibrary\WPLR\rest;
-use MatthiasWeb\RealMediaLibrary\WPLR\widget;
+use MatthiasWeb\RealMediaLibrary\WPLR\sync;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -30,9 +29,15 @@ class Core extends base\Core {
     
     /**
      * Application core constructor.
+     * 
+     * @TODO rest_request_after_callbacks update_count
      */
     protected function __construct() {
         parent::__construct();
+        
+        wp_rml_register_creatable(WPLR_RML_NS . '\\folder\\Root', WPLR_RML_TYPE_ROOT);
+        wp_rml_register_creatable(WPLR_RML_NS . '\\folder\\Folder', WPLR_RML_TYPE_FOLDER);
+        wp_rml_register_creatable(WPLR_RML_NS . '\\folder\\Collection', WPLR_RML_TYPE_COLLECTION);
         
         // Register all your before init hooks here.
         // Note: At this point isn't sure if RML is installed and the min version is reached.
@@ -40,8 +45,7 @@ class Core extends base\Core {
         // all your hooks implementations.
         
         // Register all your before init hooks here
-        add_action('plugins_loaded', array($this, 'updateDbCheck'));
-        add_action('widgets_init', array($this, 'widgets_init'));
+        add_action('plugins_loaded', array($this, 'updateDbCheck')); // @TODO RML/Migration
     }
     
     /**
@@ -56,23 +60,30 @@ class Core extends base\Core {
             return;
         }
         
+        // Check if WPLR is installed
+        if (!$this->wplrInstalled()) {
+            require_once(WPLR_RML_INC . 'others/fallback-wplr.php');
+            return;
+        }
+        
         $this->service = new rest\Service();
+        $folders = new sync\Folders();
+        $attachments = new sync\Attachments();
         
         // Register all your hooks here
         add_action('rest_api_init', array($this->getService(), 'rest_api_init'));
-        add_action('admin_enqueue_scripts', array($this->getAssets(), 'admin_enqueue_scripts'));
-        add_action('wp_enqueue_scripts', array($this->getAssets(), 'wp_enqueue_scripts'));
-        add_action('admin_menu', array(new menu\Page(), 'admin_menu'));
+        add_action('RML/Scripts', array($this->getAssets(), 'admin_enqueue_scripts'));
+        add_action('wplr_reset', array($folders, 'reset'), 10, 0);
+        add_action('wplr_create_folder', array($folders, 'create_folder'), 10, 3);
+        add_action('wplr_create_collection', array($folders, 'create_collection'), 10, 3);
+        add_action('wplr_remove_folder', array($folders, 'remove_folder'), 10, 1);
+        add_action('wplr_remove_collection', array($folders, 'remove_collection'), 10, 1);
+        add_action('wplr_update_folder', array($folders, 'update_folder'), 10, 2);
+        add_action('wplr_update_collection', array($folders, 'update_collection'), 10, 2);
+
+        add_action('wplr_add_media_to_collection', array($attachments, 'add_to_collection'), 10, 2);
+        add_action('wplr_remove_media_to_collection', array($attachments, 'remove_from_collection'), 10, 2);
     }
-    
-    /**
-	 * Register widgets.
-	 */
-	public function widgets_init() {
-	    if ($this->rmlVersionReached()) {
-	        register_widget(WPLR_RML_NS . '\\widget\\Widget');
-	    }
-	}
 	
     /**
      * Get the service.
