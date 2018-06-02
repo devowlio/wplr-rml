@@ -92,7 +92,7 @@ abstract class Core extends Base {
      * The plugin is loaded. Start to register the localization (i18n) files.
      */
     public function i18n() {
-        load_plugin_textdomain( WPLR_RML_TD, FALSE, WPLR_RML_PATH . $this->getPluginData("DomainPath") );
+        load_plugin_textdomain(WPLR_RML_TD, false, dirname(plugin_basename(WPLR_RML_FILE)) . $this->getPluginData("DomainPath"));
     }
     
     /**
