@@ -48,6 +48,6 @@ abstract class Base {
      */
     public function getTableName($name = "", $isRml = false) {
         global $wpdb;
-        return $wpdb->prefix . ($isRml ? 'realmedialibrary' : WPLR_RML_DB_PREFIX) . (($name == "") ? "" : "_" . $name);
+        return $wpdb->prefix . ($isRml === true ? 'realmedialibrary' : ($isRml === 'wplr' ? 'lrsync' : WPLR_RML_DB_PREFIX )) . (($name == "") ? "" : "_" . $name);
     }
 }

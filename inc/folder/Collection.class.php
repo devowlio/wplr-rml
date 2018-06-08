@@ -36,6 +36,10 @@ class Collection extends order\Sortable {
         return "2";
     }
     
+    public function forceContentCustomOrder() {
+        return true;
+    }
+    
     public function getTypeName($default = null) {
         return parent::getTypeName($default === null ? __('WP/LR Collection', WPLR_RML_TD) : $default);
     }

@@ -29,15 +29,9 @@ class Core extends base\Core {
     
     /**
      * Application core constructor.
-     * 
-     * @TODO rest_request_after_callbacks update_count
      */
     protected function __construct() {
         parent::__construct();
-        
-        wp_rml_register_creatable(WPLR_RML_NS . '\\folder\\Root', WPLR_RML_TYPE_ROOT);
-        wp_rml_register_creatable(WPLR_RML_NS . '\\folder\\Folder', WPLR_RML_TYPE_FOLDER);
-        wp_rml_register_creatable(WPLR_RML_NS . '\\folder\\Collection', WPLR_RML_TYPE_COLLECTION);
         
         // Register all your before init hooks here.
         // Note: At this point isn't sure if RML is installed and the min version is reached.
@@ -45,7 +39,16 @@ class Core extends base\Core {
         // all your hooks implementations.
         
         // Register all your before init hooks here
-        add_action('plugins_loaded', array($this, 'updateDbCheck')); // @TODO RML/Migration
+        add_action('plugins_loaded', array($this, 'updateDbCheck'));
+        add_action('RML/Activate', array($this, 'rml_activate'));
+        add_action('RML/Migration', array($this, 'rml_activate'), 10, 0);
+        add_action('RML/Creatable/Register', array($this, 'creatables'));
+    }
+    
+    public function creatables() {
+        wp_rml_register_creatable(WPLR_RML_NS . '\\folder\\Root', WPLR_RML_TYPE_ROOT);
+        wp_rml_register_creatable(WPLR_RML_NS . '\\folder\\Folder', WPLR_RML_TYPE_FOLDER);
+        wp_rml_register_creatable(WPLR_RML_NS . '\\folder\\Collection', WPLR_RML_TYPE_COLLECTION);
     }
     
     /**
@@ -81,9 +84,14 @@ class Core extends base\Core {
         add_action('wplr_update_folder', array($folders, 'update_folder'), 10, 2);
         add_action('wplr_update_collection', array($folders, 'update_collection'), 10, 2);
 
+        add_action('RML/Die', array($attachments, 'rml_die'), 10, 0);
         add_action('wplr_add_media_to_collection', array($attachments, 'add_to_collection'), 10, 2);
-        add_action('wplr_remove_media_to_collection', array($attachments, 'remove_from_collection'), 10, 2);
+        add_action('wplr_remove_media_from_collection', array($attachments, 'remove_from_collection'), 10, 2);
     }
+	
+	public function rml_activate() {
+	    $this->getActivator()->install();
+	}
 	
     /**
      * Get the service.

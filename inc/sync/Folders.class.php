@@ -6,8 +6,6 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file
 
 /**
  * This class handles the sync with WP/LR extension API when sync collections and folders.
- * 
- * @TODO migration for old extension
  */
 class Folders extends base\Base {
     private static $ROOT_NAME = 'WPLR Sync';
