@@ -1,72 +1,38 @@
-<h1><p align="center">WordPress Real Media Library Add-On Boilerplate :sparkling_heart:</p></h1>
-<p align="center">This WordPress plugin demonstrates how to setup a plugin that uses React and ES6 in a WordPress plugin (Frontend Widget, WordPress backend menu page).</p>
+=== WP/LR Sync Folders===
+Contributors: matzeeable, TigrouMeow
+Tags: lightroom, image, gallery, media, photo, export, management, admin, sync, synchronization, real media library, add-on
+Requires at least: 4.4
+Requires PHP: 5.3.0
+Tested up to: 4.9
+Stable tag: 1.0
 
----
+Displays the hierarchy of folders and collections nicely on the left side of your Media Library by syncing with the Real Media Library plugin.
 
-[![GitHub tag](https://img.shields.io/github/tag/matzeeable/wp-real-media-library-add-on.svg?colorB=green)](https://github.com/matzeeable/wp-real-media-library-add-on) 
-[![license](https://img.shields.io/github/license/matzeeable/wp-real-media-library-add-on.svg?colorB=green)](https://github.com/matzeeable/wp-real-media-library-add-on/blob/master/LICENSE) 
-[![Slack channel](https://img.shields.io/badge/Slack-join-green.svg)](https://matthiasweb.signup.team/)
+== Description ==
 
-**Client-side features:** _Familiar React API & patterns (ES6)_
-* [**ReactJS**](https://reactjs.org/) v16 with babel `env` preset
-* [**webpack**](https://webpack.js.org/) v3 build for assets
-* CSS and JS [**Sourcemap**](https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/) generation for debugging purposes
-* [**SASS**](http://sass-lang.com/) stylesheets compiler (`.scss` files)
-* [**PostCSS**](http://postcss.org/) for transforming CSS with JavaScript (including autoprefixing)
-* Generation of **minified** sources for production (JS, CSS)
-* [**Grunt**](https://gruntjs.com/) for automation tasks
-* Admin backend components, in this case an own page with a button (`public/src/admin.js`)
-* Frontend components, in this case a simple widget (`public/src/widget.js`)
+Synchronize your photos, collections, keywords and metadata between Lightroom and WordPress Real Media Library. Any changes in your Lightroom will be replicated in your WordPress media library folder structure.
 
-**Server-side features:** _OOP-style for building a high-quality plugin._
-* PHP >= **5.3** required: An admin notice is showed when not available
-* WordPress >= **4.4** required: An admin notice is showed when not available with a link to the updater
-* [**Real Media Library**](https://matthias-web.com/wordpress/real-media-library) >= **3.0** required: An admin notice is showed when not available
-* [**Namespace**](http://php.net/manual/en/language.namespaces.rationale.php) support
-* [**Autloading**](http://php.net/manual/en/language.oop5.autoload.php) classes in connection with namespaces
-* [**WP REST API v2**](http://v2.wp-api.org/) for API programming, no longer use `admin-ajax.php` for your CRUD operations
-* [`SCRIPT_DEBUG`](https://codex.wordpress.org/Debugging_in_WordPress#SCRIPT_DEBUG) enables not-minified sources for debug sources (use in connection with `npm run build-dev`)
-* [**Cachebuster**](http://www.adopsinsider.com/ad-ops-basics/what-is-a-cache-buster-and-how-does-it-work/) for public resources (`public`)
-* Predefined `.po` files for **translating (i18n)** the plugin
-* [**ApiGen**](https://github.com/ApiGen/ApiGen) for PHP Documentation
-* [**JSDoc**](http://usejsdoc.org/) for JavaScript Documentation
-* [**apiDoc**](http://apidocjs.com//) for API Documentation
-* [**WP HookDoc**](https://github.com/matzeeable/wp-hookdoc) for Filters & Actions Documentation
+**INSTALLATION**. This plugin requires the WP/LR Sync plugin for Lightroom and WordPress Real Media Library. They are available here: [WP/LR Sync at Meow Apps](https://meowapps.com/wplr-sync) and [WP Real Media Library](https://codecanyon.net/item/wordpress-real-media-library-media-categories-folders/13155134).
 
-## :white_check_mark: Prerequesits
-* [**Node.js**](https://nodejs.org/) `npm` command globally available in CLI
-* [**Grunt CLI**](https://gruntjs.com/using-the-cli) `grunt` command globally available in CLI
-* [**Composer**](https://getcomposer.org/) `composer` command globally available in CLI
+**GALLERIES BASED ON YOUR LIGHTROOM COLLECTIONS**. When the Lightroom hierarchy and attachments are synced with your WordPress installation you are able to generate dynamic galleries on your posts and pages.
 
-## :mountain_bicyclist: Getting Started
+Official WP/LR FAQ is here: https://meowapps.com/wplr-sync/faq.
 
-Navigate to the plugin directory, install `npm` and `composer` dependencies, and run this installation script:
+== Installation ==
 
-#### Download boilerplate
-```sh
-$ cd /path/to/wordpress/wp-content/plugins
-$ git clone https://github.com/matzeeable/wp-real-media-library-add-on.git ./your-plugin-name
-$ cd your-plugin-name
-```
+1. Upload `wplr-rml` to the `/wp-content/plugins/` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Install the Lightroom plugin from here: https://meowapps.com/wplr-sync
+4. Install the WP Real Media Library plugin from: [WP Real Media Library](https://codecanyon.net/item/wordpress-real-media-library-media-categories-folders/13155134)
+5. Synchronize everything :)
 
-#### Create plugin
-```sh
-$ npm run create    # Guide through plugin generation
-$ npm run dev       # Start webpack in "watch" mode so that the assets are automatically compiled when a file changes
-                    # You are now able to activate the plugin in your WordPress backend
-```
+== Frequently Asked Questions ==
+= I used the previous Real Media Library extension =
+If you have used already the built-in WP Real Media Library extension you navigate to `WP/LR Sync` > `Extensions`. Make sure you have still ticked "Real Media Library" in extensions and click the button `Reset with Extensions`. This does remove all the RML folders which where already synced with your media library (it does not delete attachments from WP itself). Afterwards untick the RML extension, save, activate the `WP/LR Sync Folders` plugin and do `Resync with Extensions`.
 
-#### Generate CLI preview (npm run create)
-![generate cli](https://image.prntscr.com/image/z61WDD8RQ3GJ3Bp4pZ-ElQ.png)
+== Changelog ==
 
-## :book: Boilerplate Documentation
-This boilerplate is a fork of [matzeeable/wp-reactjs-starter](https://github.com/matzeeable/wp-reactjs-starter). You can find the whole documentation [here](https://github.com/matzeeable/wp-reactjs-starter/blob/master/README.md).
+= 1.0 =
+* First release.
 
-#### Addition
-In every `base\Base` child class implementation you can use the method `rmlVersionReached()` to check if Real Media Library is available and the minimum version is reached.
-
-## :electric_plug: Extend Real Media Library.
-Just check out the API Documentation of Real Media Library [here](https://matthias-web.com/wordpress/real-media-library/documentation/).
-
-## Licensing / Credits
-This boilerplate is MIT licensed. Originally this boilerplate is a fork of [matzeeable/wp-reactjs-starter](https://github.com/matzeeable/wp-reactjs-starter).
+== Screenshots ==
