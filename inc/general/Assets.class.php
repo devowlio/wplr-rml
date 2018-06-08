@@ -20,7 +20,7 @@ class Assets extends base\Assets {
      */
     public function enqueue_scripts_and_styles($type) {
         $this->enqueueScript('wplr-rml', 'admin.js', array('react-dom'));
-	    //$this->enqueueStyle('wplr-rml', 'admin.css');
+	    $this->enqueueStyle('wplr-rml', 'admin.css');
 	    wp_localize_script('wplr-rml', 'wplr_rmlOpts', $this->adminLocalizeScript());
     }
     

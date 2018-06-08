@@ -100,6 +100,30 @@ class Folders extends base\Base {
         $this->update_folder($collectionId, $collection);
     }
     
+    public function move_collection($collectionId, $folderId, $previousFolderId) {
+        // Default InFolder should be "WPLR Sync"
+		if ($collectionId != -1 && empty($folderId)) {
+            $parent = $this->create_root();
+            $inFolderId = -1;
+		} else {
+		    $parent = self::wplr2rml($folderId, true);
+		}
+		
+		self::wplr2rml($collectionId)->setParent($parent, -1, true);
+    }
+    
+    public function move_folder($folderId, $inFolderId, $previousFolderId) {
+        // Default InFolder should be "WPLR Sync"
+		if ($folderId != -1 && empty($inFolderId)) {
+            $parent = $this->create_root();
+            $inFolderId = -1;
+		} else {
+		    $parent = self::wplr2rml($inFolderId, true);
+		}
+		
+		self::wplr2rml($folderId)->setParent(empty($parent) ? -1 : $parent, -1, true);
+    }
+    
     /**
      * Set the wplr_id for a given folder.
      * 

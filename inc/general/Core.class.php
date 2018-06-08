@@ -83,6 +83,8 @@ class Core extends base\Core {
         add_action('wplr_remove_collection', array($folders, 'remove_collection'), 10, 1);
         add_action('wplr_update_folder', array($folders, 'update_folder'), 10, 2);
         add_action('wplr_update_collection', array($folders, 'update_collection'), 10, 2);
+        add_action('wplr_move_folder', array($folders, 'move_folder'), 10, 3);
+        add_action('wplr_move_collection', array($folders, 'move_collection'), 10, 3);
 
         add_action('RML/Die', array($attachments, 'rml_die'), 10, 0);
         add_action('wplr_add_media_to_collection', array($attachments, 'add_to_collection'), 10, 2);
