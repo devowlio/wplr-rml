@@ -21,24 +21,28 @@ class Attachments extends base\Base {
      * wp_lrsync_relations.sort to wp_realmedialibrary_posts.nr.
      */
     public function rml_die() {
-        global $wpdb;
         $indexes = array_unique($this->batchIndexSort);
         if (count($indexes) > 0) {
             foreach ($indexes as $rmlFolder => $colId) {
-                $table_name_posts = $this->getTableName('posts', true);
-                $table_name_relations = $this->getTableName('relations', 'wplr');
-                $sql = $wpdb->prepare("UPDATE $table_name_posts AS rmlp
-                LEFT JOIN (
-                	SELECT lrr.wp_id AS attachment, @rownum := @rownum + 1 AS nr
-                	FROM (SELECT @rownum := 0) AS r, $table_name_relations lrr
-                	WHERE lrr.wp_col_id = %d
-                	ORDER BY lrr.sort
-                ) AS rmlnew ON rmlp.isShortcut = rmlnew.attachment
-                SET rmlp.nr = rmlnew.nr
-                WHERE rmlp.fid = %d", $colId, $rmlFolder);
-                $wpdb->query($sql);
+                $this->syncSort($rmlFolder, $colId);
             }
         }
+    }
+    
+    private function syncSort($rmlFolder, $colId) {
+        global $wpdb;
+        $table_name_posts = $this->getTableName('posts', true);
+        $table_name_relations = $this->getTableName('relations', 'wplr');
+        $sql = $wpdb->prepare("UPDATE $table_name_posts AS rmlp
+        LEFT JOIN (
+        	SELECT lrr.wp_id AS attachment, @rownum := @rownum + 1 AS nr
+        	FROM (SELECT @rownum := 0) AS r, $table_name_relations lrr
+        	WHERE lrr.wp_col_id = %d
+        	ORDER BY lrr.sort
+        ) AS rmlnew ON rmlp.isShortcut = rmlnew.attachment
+        SET rmlp.nr = rmlnew.nr
+        WHERE rmlp.fid = %d", $colId, $rmlFolder);
+        $wpdb->query($sql);
     }
     
     public function add_to_collection($mediaId, $collectionId) {
@@ -62,7 +66,14 @@ class Attachments extends base\Base {
             if (is_array($create)) {
     			wp_die('Error while creating shortcut to collection: ' . $create[0]);
     		}
-    		$this->batchIndexSort[$rmlFolder] = Folders::wplr2rml($collectionId)->getRowData('wplr_id');
+    		
+    		// The rml_die does no longer work for XML/RPC request
+    		$colId = Folders::wplr2rml($collectionId)->getRowData('wplr_id');
+    		if (defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) {
+    		    $this->syncSort($rmlFolder, $colId);
+    		}else{
+    		    $this->batchIndexSort[$rmlFolder] = $colId;
+    		}
         }
     }
     
