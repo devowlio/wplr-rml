@@ -1,6 +1,6 @@
 {
   "name": "wplr-rml",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "WordPress Real Media Library Add-On Boilerplate using new web technologies.",
   "author": "Matthias Günter <support@matthias-web.com>",
   "license": "MIT",
@@ -15,7 +15,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "create": "npm install && npm run generate && npm run build && npm run build-dev && composer install && npm run docs && grunt copy-npmLibs",
+    "create": "npm install && npm run generate && npm run build && npm run build-dev && composer install && npm run docs && grunt copy-npmLibs && npm run svn-co",
+    "svn-co": "mkdir dist && svn co https://plugins.svn.wordpress.org/wplr-sync-folders dist",
     "generate": "grunt wordpress-reactjs-starter-makeyours",
     "build": "NODE_ENV=production webpack",
     "build-dev": "webpack",
