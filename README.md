@@ -38,6 +38,9 @@ If you have used already the built-in WP Real Media Library extension you naviga
 
 == Changelog ==
 
+= 1.0.1 =
+* Fixed bug with custom sorting issues
+
 = 1.0 =
 * First release.
 

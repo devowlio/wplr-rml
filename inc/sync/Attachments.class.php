@@ -9,27 +9,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file
  */
 class Attachments extends base\Base {
     
-    /**
-     * An array representing a key-value map of the RML fid => WP/LR wp_col_id
-     * to reindex when media is published to the collection. This isn't necessery
-     * in remove action.
-     */
-    private $batchIndexSort = array();
-    
-    /**
-     * All the stuff is done for the WP/LR synchronization, let's reflect the
-     * wp_lrsync_relations.sort to wp_realmedialibrary_posts.nr.
-     */
-    public function rml_die() {
-        $indexes = array_unique($this->batchIndexSort);
-        if (count($indexes) > 0) {
-            foreach ($indexes as $rmlFolder => $colId) {
-                $this->syncSort($rmlFolder, $colId);
-            }
-        }
-    }
-    
-    private function syncSort($rmlFolder, $colId) {
+    private function syncSort($rmlFolder) {
         global $wpdb;
         $table_name_posts = $this->getTableName('posts', true);
         $table_name_relations = $this->getTableName('relations', 'wplr');
@@ -41,7 +21,7 @@ class Attachments extends base\Base {
         	ORDER BY lrr.sort
         ) AS rmlnew ON rmlp.isShortcut = rmlnew.attachment
         SET rmlp.nr = rmlnew.nr
-        WHERE rmlp.fid = %d", $colId, $rmlFolder);
+        WHERE rmlp.fid = %d", $rmlFolder->getRowData('wplr_id'), $rmlFolder->getId());
         $wpdb->query($sql);
     }
     
@@ -59,21 +39,20 @@ class Attachments extends base\Base {
     		}
         }
         
-        // Create shortcut in the given collection if not already exists
-        $rmlFolder = Folders::wplr2rml($collectionId, true);
-        if (!wp_attachment_has_shortcuts($mediaId, $rmlFolder)) {
-            $create = wp_rml_create_shortcuts($rmlFolder, array($mediaId), true);
-            if (is_array($create)) {
-    			wp_die('Error while creating shortcut to collection: ' . $create[0]);
-    		}
-    		
-    		// The rml_die does no longer work for XML/RPC request
-    		$colId = Folders::wplr2rml($collectionId)->getRowData('wplr_id');
-    		if (defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) {
-    		    $this->syncSort($rmlFolder, $colId);
-    		}else{
-    		    $this->batchIndexSort[$rmlFolder] = $colId;
-    		}
+        $rmlFolder = Folders::wplr2rml($collectionId);
+        if (is_rml_folder($rmlFolder)) {
+            $fid = $rmlFolder->getId();
+            
+            // Create shortcut in the given collection if not already exists
+            if (!wp_attachment_has_shortcuts($mediaId, $fid)) {
+                $create = wp_rml_create_shortcuts($fid, array($mediaId), true);
+                if (is_array($create)) {
+        			wp_die('Error while creating shortcut to collection: ' . $create[0]);
+        		}
+            }
+            
+            // Sync sort
+            $this->syncSort($rmlFolder);
         }
     }
     
@@ -89,9 +68,6 @@ class Attachments extends base\Base {
                     wp_delete_attachment((int) $shortcut['attachment'], true);
                 }
             }
-        }else{
-            // The attachment is only in max one collection left, remove the original file with shortcuts...
-            //wp_delete_attachment($mediaId, true); This is automatically done by WP/LR
         }
 	}
 }
