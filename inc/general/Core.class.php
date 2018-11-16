@@ -76,6 +76,7 @@ class Core extends base\Core {
         // Register all your hooks here
         add_action('rest_api_init', array($this->getService(), 'rest_api_init'));
         add_action('RML/Scripts', array($this->getAssets(), 'admin_enqueue_scripts'));
+        add_action('RML/Folder/Created', array($folders, 'folder_created'), 10, 4);
         add_action('wplr_reset', array($folders, 'reset'), 10, 0);
         add_action('wplr_create_folder', array($folders, 'create_folder'), 10, 3);
         add_action('wplr_create_collection', array($folders, 'create_collection'), 10, 3);
@@ -88,6 +89,8 @@ class Core extends base\Core {
 
         add_action('wplr_add_media_to_collection', array($attachments, 'add_to_collection'), 10, 2);
         add_action('wplr_remove_media_from_collection', array($attachments, 'remove_from_collection'), 10, 2);
+        
+        add_filter('RPM/Queue/Added/Process', array($attachments, 'rpm_instant_process'), 10, 2);
     }
 	
 	public function rml_activate() {

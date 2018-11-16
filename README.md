@@ -2,7 +2,7 @@
 Contributors: mguenter, TigrouMeow
 Tags: lightroom, image, gallery, media, photo, export, management, admin, sync, synchronization, real media library, add-on
 Requires at least: 4.4
-Requires PHP: 5.3.0
+Requires PHP: 5.4.0
 Tested up to: 4.9
 Stable tag: trunk
 
@@ -37,6 +37,10 @@ Official WP/LR FAQ: [here](https://meowapps.com/wplr-sync/faq). If you are a dev
 If you have used already the built-in WP Real Media Library extension you navigate to `WP/LR Sync` > `Extensions`. Make sure you have still ticked "Real Media Library" in extensions and click the button `Reset with Extensions`. This does remove all the RML folders which where already synced with your media library (it does not delete attachments from WP itself). Afterwards untick the RML extension, save, activate the `WP/LR Sync Folders` plugin and do `Resync with Extensions`.
 
 == Changelog ==
+
+= 1.0.2 =
+* PHP 5.4 is now the minimum required PHP version
+* Prepared compatibility with Real Physical Media
 
 = 1.0.1 =
 * Fixed bug with custom sorting issues

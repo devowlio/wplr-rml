@@ -11,6 +11,8 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
  */
 class Collection extends order\Sortable {
     
+    use BaseFolder;
+    
     public static function create($rowData) {
         $result = new Collection($rowData->id);
         $result->setParent($rowData->parent);

@@ -13,6 +13,18 @@ class Folders extends base\Base {
 	private static $RESTRICTIONS_ROOT = array('ren>', 'cre>', 'ins>', 'del>', 'mov>');
 	
 	private static $RESTRICTIONS = array('par>');
+	
+    /**
+     * A new folder is created in RML so check if it is the root folder and
+     * initially add some folder metadata.
+     */
+    public function folder_created($parent, $name, $type, $id) {
+        if ($type === WPLR_RML_TYPE_ROOT) {
+            // Make compatible with WP Real Physical Media
+            add_media_folder_meta($id, 'rpmPhysicalExcludeFolder', true, true);
+            add_media_folder_meta($id, 'rpmSkipToFirstShortcut', true, true);
+        }
+    }
     
     /**
      * Create the root folder if not already exists.
@@ -32,7 +44,7 @@ class Folders extends base\Base {
             wp_die('Could not create Lightroom root folder');
         }
         
-        $this->setWplrId($id, -1);
+        wp_rml_get_object_by_id($id)->setWplrId(-1);
         return $id;
     }
     
@@ -63,7 +75,7 @@ class Folders extends base\Base {
 		if (is_array($id)) {
 			wp_die('Error while creating folder: ' . $id[0]);
 		}
-		$this->setWplrId($id, $folderId);
+		wp_rml_get_object_by_id($id)->setWplrId($folderId);
 		return $id;
 	}
     
@@ -78,7 +90,7 @@ class Folders extends base\Base {
 		if (is_array($id)) {
 		    wp_die('Error while creating collection: ' . $id[0]);
 		}
-		$this->setWplrId($id, $collectionId);
+		wp_rml_get_object_by_id($id)->setWplrId($collectionId);
 		return $id;
     }
     
@@ -122,19 +134,6 @@ class Folders extends base\Base {
 		}
 		
 		self::wplr2rml($folderId)->setParent(empty($parent) ? -1 : $parent, -1, true);
-    }
-    
-    /**
-     * Set the wplr_id for a given folder.
-     * 
-     * @param int $folderId The RML folder id
-     * @param int $id The WPLR id
-     */
-    public function setWplrId($folderId, $id) {
-        global $wpdb;
-        
-        $sql = 'UPDATE ' . $this->getTableName('', true) . ' SET wplr_id=%d WHERE id = %d';
-        return $wpdb->query($wpdb->prepare($sql, $id, $folderId));
     }
     
     /**
