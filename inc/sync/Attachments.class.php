@@ -19,7 +19,7 @@ class Attachments extends base\Base {
             FROM (SELECT @rownum := 0) AS r, $table_name_relations lrr
             WHERE lrr.wp_col_id = %d
             ORDER BY lrr.sort
-        ) AS rmlnew ON rmlp.isShortcut = rmlnew.attachment
+        ) AS rmlnew ON (rmlp.isShortcut = rmlnew.attachment OR rmlp.attachment = rmlnew.attachment)
         SET rmlp.nr = rmlnew.nr
         WHERE rmlp.fid = %d", $rmlFolder->getRowData('wplr_id'), $rmlFolder->getId());
         $wpdb->query($sql);
@@ -27,20 +27,29 @@ class Attachments extends base\Base {
     
     public function add_to_collection($mediaId, $collectionId) {
         global $wplr;
-        $rmlFolder = Folders::wplr2rml($collectionId, true);
+        $rmlFolder = Folders::wplr2rml($collectionId);
+        $fid = $rmlFolder->getId();
         $currentFolder = (int) wp_attachment_folder($mediaId);
+        $sort = false;
         
         // Check if first occurance then move the file
         if ($currentFolder === _wp_rml_root() /* Should this check if it is not a WP_LR folder? */) {
-            $resp = wp_rml_move($rmlFolder, array($mediaId), true);
+            $resp = wp_rml_move($fid, array($mediaId), true);
             if (is_array($resp)) {
-                wp_die('Error while adding media (' . $mediaId . ') to collection (' . $collectionId . ' -> RML: ' . $rmlFolder . '): ' . $resp[0]);
+                wp_die('Error while adding media (' . $mediaId . ') to collection (' . $collectionId . ' -> RML: ' . $fid . '): ' . $resp[0]);
             }
-        }else if (!wp_attachment_has_shortcuts($mediaId, $rmlFolder)) { // Create shortcut in the given collection if not already exists
-            $create = wp_rml_create_shortcuts($rmlFolder, array($mediaId), true);
+            $sort = true;
+        }else if ($currentFolder !== $fid && !wp_attachment_has_shortcuts($mediaId, $fid)) { // Create shortcut in the given collection if not already exists
+            $create = wp_rml_create_shortcuts($fid, array($mediaId), true);
             if (is_array($create)) {
-                wp_die('Error while creating shortcut for (' . $mediaId . ') to collection (' . $collectionId . ' -> RML: ' . $rmlFolder . '): ' . $create[0]);
+                wp_die('Error while creating shortcut for (' . $mediaId . ') to collection (' . $collectionId . ' -> RML: ' . $fid . '): ' . $create[0]);
             }
+            $sort = true;
+        }
+        
+        // Sort the folder to the LR custom order
+        if ($sort) {
+            $this->syncSort($rmlFolder);
         }
     }
     
