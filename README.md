@@ -38,6 +38,10 @@ If you have used already the built-in WP Real Media Library extension you naviga
 
 == Changelog ==
 
+= 1.1 =
+* Real Media Library v4.0.10 is now required as minimum version
+* Fixed the synchronization mechanism and create only shortcuts when needed (see https://github.com/matzeeable/wplr-rml/issues/2)
+
 = 1.0.2 =
 * PHP 5.4 is now the minimum required PHP version
 * Prepared compatibility with Real Physical Media
