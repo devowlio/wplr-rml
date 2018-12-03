@@ -22,7 +22,6 @@ class Folders extends base\Base {
         if ($type === WPLR_RML_TYPE_ROOT) {
             // Make compatible with WP Real Physical Media
             add_media_folder_meta($id, 'rpmPhysicalExcludeFolder', true, true);
-            add_media_folder_meta($id, 'rpmSkipToFirstShortcut', true, true);
         }
     }
     
