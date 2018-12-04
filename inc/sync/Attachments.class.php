@@ -9,6 +9,12 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file
  */
 class Attachments extends base\Base {
     
+    private $root = null;
+    
+    public function __construct() {
+        $this->root = _wp_rml_root();
+    }
+    
     private function syncSort($rmlFolder) {
         global $wpdb;
         $table_name_posts = $this->getTableName('posts', true);
@@ -33,16 +39,24 @@ class Attachments extends base\Base {
         $sort = false;
         
         // Check if first occurance then move the file
-        if ($currentFolder === _wp_rml_root() /* Should this check if it is not a WP_LR folder? */) {
+        if ($currentFolder === $this->root /* Should this check if it is not a WP_LR folder? */) {
             $resp = wp_rml_move($fid, array($mediaId), true);
             if (is_array($resp)) {
                 wp_die('Error while adding media (' . $mediaId . ') to collection (' . $collectionId . ' -> RML: ' . $fid . '): ' . $resp[0]);
             }
             $sort = true;
         }else if ($currentFolder !== $fid && !wp_attachment_has_shortcuts($mediaId, $fid)) { // Create shortcut in the given collection if not already exists
-            $create = wp_rml_create_shortcuts($fid, array($mediaId), true);
-            if (is_array($create)) {
-                wp_die('Error while creating shortcut for (' . $mediaId . ') to collection (' . $collectionId . ' -> RML: ' . $fid . '): ' . $create[0]);
+            // Check if a "Unorganized" shortcut of this file already exists and use it instead of creating a new one
+            $unorganized = wp_attachment_get_shortcuts($mediaId, $this->root);
+            
+            if (count($unorganized) > 0) {
+                // A shortcut already exists so use it
+                wp_rml_move($fid, array($unorganized[0]), true);
+            }else{
+                $create = wp_rml_create_shortcuts($fid, array($mediaId), true);
+                if (is_array($create)) {
+                    wp_die('Error while creating shortcut for (' . $mediaId . ') to collection (' . $collectionId . ' -> RML: ' . $fid . '): ' . $create[0]);
+                }
             }
             $sort = true;
         }
@@ -56,26 +70,67 @@ class Attachments extends base\Base {
     public function remove_from_collection($mediaId, $collectionId) {
         $rmlFolder = Folders::wplr2rml($collectionId, true);
         $shortcuts = wp_attachment_get_shortcuts($mediaId, $rmlFolder, true);
+        $locations = $this->fetchLocations($mediaId);
+        
         if (count($shortcuts) > 0) {
             // It's a shortcut which gets deleted, so delete it directly
             foreach ($shortcuts as $shortcut) { 
-                if ((int) $shortcut['folderId'] === $rmlFolder) { 
-                    wp_delete_attachment((int) $shortcut['attachment'], true); 
+                if ((int) $shortcut['folderId'] === $rmlFolder) {
+                    $this->shortcutDeleteOrMove((int) $shortcut['attachment'], $mediaId, $locations, (int) $collectionId);
                 }
             }
         }else{
             // Check if there are any further shortcuts
-            $sto = _wp_rml_root();
+            $sto = $this->root;
             $shortcuts = wp_attachment_get_shortcuts($mediaId, false, true);
-            if (count($shortcuts) > 0) {
+            $organized = array(); // A collection of all organized files
+            foreach ($shortcuts as $shortcut) {
+                if ((int) $shortcut['folderId'] !== $sto) {
+                    $organized[] = $shortcut;
+                }
+            }
+            
+            if (count($organized) > 0) {
                 // There exists another shortcut, so delete the first one and move the file
-                wp_delete_attachment($shortcuts[0]['attachment'], true);
-                $sto = $shortcuts[0]['folderId'];
+                $this->shortcutDeleteOrMove((int) $organized[0]['attachment'], $mediaId, $locations, (int) $collectionId);
+                $sto = $organized[0]['folderId'];
             }else{
                 // It is the default image so move it to unorganized, Silence is golden.
             }
             wp_rml_move($sto, array($mediaId), true);
         }
+    }
+    
+    /**
+     * If the WP/LR location still exists then move the shortcut to Unorganized 
+     * to avoid duplicate ID generation.
+     * 
+     * @see https://github.com/matzeeable/wplr-rml/issues/3
+     */
+    private function shortcutDeleteOrMove($shortcutId, $originalId, $locations, $collectionId) {
+        $exists = false;
+        foreach ($locations as $location) {
+            if (((int) $location->wp_col_id) === $collectionId) {
+                $exists = true;
+                break;
+            }
+        }
+        if ($exists) {
+            wp_rml_move($this->root, array($shortcutId), true);
+        }else{
+            wp_delete_attachment($shortcutId, true);
+        }
+    }
+    
+    /**
+     * Get all synced locations within WP/LR sync.
+     * 
+     * @returns object[]
+     */
+    private function fetchLocations($mediaId) {
+        global $wpdb;
+        $table_name_relations = $this->getTableName('relations', 'wplr');
+        return $wpdb->get_results($wpdb->prepare('SELECT * FROM ' . $table_name_relations . ' WHERE wp_id = %d', $mediaId));
     }
     
     /**
