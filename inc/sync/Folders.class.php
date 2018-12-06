@@ -1,6 +1,7 @@
 <?php
 namespace MatthiasWeb\RealMediaLibrary\WPLR\sync;
 use MatthiasWeb\RealMediaLibrary\WPLR\base;
+use MatthiasWeb\RealMediaLibrary\WPLR\general;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -48,7 +49,7 @@ class Folders extends base\Base {
     }
     
     public function reset() {
-        delete_option(WPLR_RML_OPT_PREFIX . self::OPT_NAME_MIGRATION_ISSUE_3);
+        delete_option(WPLR_RML_OPT_PREFIX . general\Core::OPT_NAME_MIGRATION_ISSUE_3);
 		$this->remove_folder(-1);
 	}
     

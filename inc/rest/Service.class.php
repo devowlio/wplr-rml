@@ -2,6 +2,7 @@
 namespace MatthiasWeb\RealMediaLibrary\WPLR\rest;
 use MatthiasWeb\RealMediaLibrary\WPLR\base;
 use MatthiasWeb\RealMediaLibrary\WPLR\general;
+use MatthiasWeb\RealMediaLibrary\rest as rmlRest;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -24,6 +25,11 @@ class Service extends base\Base {
         register_rest_route(Service::SERVICE_NAMESPACE, '/plugin', array(
             'methods' => 'GET',
             'callback' => array($this, 'routePlugin')
+        ));
+        
+        register_rest_route(Service::SERVICE_NAMESPACE, '/reset/shortcuts', array(
+            'methods' => 'DELETE',
+            'callback' => array($this, 'routeDeleteShortcuts')
         ));
     }
     
@@ -53,6 +59,33 @@ class Service extends base\Base {
      */
     public function routePlugin() {
         return new \WP_REST_Response(general\Core::getInstance()->getPluginData());
+    }
+    
+    /**
+     * @api {delete} /wplr-rml/v1/reset/shortcuts Delete the shortcuts which are associated with WP/LR attachments
+     * @apiHeader {string} X-WP-Nonce
+     * @apiParam {int} post_name The new length of the post_name field
+     * @apiParam {int} guid The new length of the guid field
+     * @apiName DeleteShortcuts
+     * @apiGroup Plugin
+     * @apiVersion 0.1.0
+     * @apiPermission manage_options
+     */
+    public function routeDeleteShortcuts($request) {
+        global $wpdb;
+        if (($permit = rmlRest\Service::permit()) !== null) return $permit;
+        
+        $table_name_posts = $this->getTableName('posts', true);
+        $table_name_lrsync = $this->getTableName('', 'wplr');
+        $sql = 'SELECT rmlp.attachment FROM ' . $table_name_lrsync . ' lr
+            INNER JOIN ' . $table_name_posts . ' rmlp ON rmlp.isShortcut = lr.wp_id
+            WHERE rmlp.isShortcut > 0';
+        $ids = $wpdb->get_col($sql);
+        foreach ($ids as $id) {
+            wp_delete_attachment($id, true);
+        }
+        
+        return new \WP_REST_Response(true);
     }
     
     /**

@@ -39,6 +39,9 @@ If you have used already the built-in WP Real Media Library extension you naviga
 = Total Sync shows shortcut as not linked =
 If you use Total Sync it shows shortcuts as unlinked. Do not worry about this - a LR id may only be associated with one attachment within WordPress.
 
+= I see a lot of shortcuts, how can I delete them? =
+The extension creates shortcuts only when necessary. That means a shortcut is created when an image is put into multiple collections. But if you want to delete them make sure you have Real Media Library and this extension active: Navigate to Settings > Media Tab "Reset" and click "Delete WP/LR shortcuts".
+
 == Changelog ==
 
 = 1.1 =

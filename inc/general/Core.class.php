@@ -80,6 +80,7 @@ class Core extends base\Core {
         
         // Register all your hooks here
         add_action('RML/Scripts', array($this->getAssets(), 'admin_enqueue_scripts'));
+        add_action('RML/Options/Register', array($this, 'options'));
         
         if (get_option(WPLR_RML_OPT_PREFIX . self::OPT_NAME_MIGRATION_ISSUE_3) !== false) {
             add_action('admin_notices', array($this, 'admin_notice_migration_issue3'));
@@ -101,6 +102,20 @@ class Core extends base\Core {
             
             add_filter('RPM/Queue/Added/Process', array($attachments, 'rpm_instant_process'), 10, 2);
         }
+    }
+    
+    public function options() {
+        add_settings_field(
+            'rml_wplr_button_reset_shortcuts',
+            '<label for="rml_wplr_button_reset_shortcuts">'.__('WP/LR shortcut files' , RML_TD ).'</label>' ,
+            array($this, 'html_rml_wplr_button_reset_shortcuts'),
+            'media',
+            'rml_options_reset'
+        );
+    }
+    
+    public function html_rml_wplr_button_reset_shortcuts() {
+        echo '<a class="rml-rest-button button" data-url="reset/shortcuts" data-urlnamespace="wplr-rml/v1" data-method="DELETE">' . __('Delete', WPLR_RML_TD) . '</a>';
     }
     
     public function admin_notice_migration_issue3() {
