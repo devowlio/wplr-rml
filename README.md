@@ -36,6 +36,9 @@ Official WP/LR FAQ: [here](https://meowapps.com/wplr-sync/faq). If you are a dev
 = I used the previous Real Media Library extension =
 If you have used already the built-in WP Real Media Library extension you navigate to `WP/LR Sync` > `Extensions`. Make sure you have still ticked "Real Media Library" in extensions and click the button `Reset with Extensions`. This does remove all the RML folders which where already synced with your media library (it does not delete attachments from WP itself). Afterwards untick the RML extension, save, activate the `WP/LR Sync Folders` plugin and do `Resync with Extensions`.
 
+= Total Sync shows shortcut as not linked =
+If you use Total Sync it shows shortcuts as unlinked. Do not worry about this - a LR id may only be associated with one attachment within WordPress.
+
 == Changelog ==
 
 = 1.1 =
