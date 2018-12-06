@@ -82,7 +82,9 @@ class Core extends base\Core {
         add_action('RML/Scripts', array($this->getAssets(), 'admin_enqueue_scripts'));
         add_action('RML/Options/Register', array($this, 'options'));
         
-        if (get_option(WPLR_RML_OPT_PREFIX . self::OPT_NAME_MIGRATION_ISSUE_3) !== false) {
+        $query = 'wplrsync_extension';
+        $isResetResyncQuery = defined('DOING_AJAX') && DOING_AJAX && isset($_POST['action']) && $_POST['action'] && (substr($_POST['action'], 0, strlen($query)) === $query);
+        if (get_option(WPLR_RML_OPT_PREFIX . self::OPT_NAME_MIGRATION_ISSUE_3) !== false && !$isResetResyncQuery) {
             add_action('admin_notices', array($this, 'admin_notice_migration_issue3'));
         }else{
             add_action('rest_api_init', array($this->getService(), 'rest_api_init'));
@@ -115,7 +117,8 @@ class Core extends base\Core {
     }
     
     public function html_rml_wplr_button_reset_shortcuts() {
-        echo '<a class="rml-rest-button button" data-url="reset/shortcuts" data-urlnamespace="wplr-rml/v1" data-method="DELETE">' . __('Delete', WPLR_RML_TD) . '</a>';
+        echo '<a class="rml-rest-button button" data-url="reset/shortcuts" data-urlnamespace="wplr-rml/v1" data-method="DELETE">' . __('Delete', WPLR_RML_TD) . '</a>
+        <a class="rml-rest-button button" data-url="reset/shortcuts" data-unorganized="yes" data-urlnamespace="wplr-rml/v1" data-method="DELETE">' . __('Delete shortcuts in "Unorganized"', WPLR_RML_TD) . '</a>';
     }
     
     public function admin_notice_migration_issue3() {
@@ -126,7 +129,7 @@ class Core extends base\Core {
 			    Due to several feedback I became attentive to this. Now I beg you to <strong>reset and resync</strong> the WP/LR extensions - until this is happened the synchronization between Real
 			    Media Library (RML) and WP/LR is paused (Lightroom synchronization still works). This process may take a while.</p>
 			    <p><strong>Why breaking-changes?</strong> The old synchronization between RML and WP/LR always creates a duplicate image when moving into a RML folder. After you have reset and resynced
-			    the extensions, the original images gets moved to the correct RML folder, and the duplicate shortcuts gets deleted. If you have used the shortcuts in your posts and pages, do a little check if everything is okay.</p>
+			    the extensions, the original images gets moved to the correct RML folder, and the duplicate shortcuts gets moved to "Unorganized". If you have used the shortcuts in your posts and pages, do a little check if everything is okay.</p>
 			    <p><a href="' . $link . '">Reset and resync extension</a> &middot; <a href="https://git.io/fpDZi" target="_blank">Read more about the issue (external link)</a></p>
 			    <p>I apologize that this happened and you now have to do some rework - but developers aren\'t perfect either.</p>
 			</div>';

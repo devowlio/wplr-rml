@@ -77,15 +77,16 @@ class Service extends base\Base {
         
         $table_name_posts = $this->getTableName('posts', true);
         $table_name_lrsync = $this->getTableName('', 'wplr');
+        $unorganized = $request->get_param('unorganized');
         $sql = 'SELECT rmlp.attachment FROM ' . $table_name_lrsync . ' lr
             INNER JOIN ' . $table_name_posts . ' rmlp ON rmlp.isShortcut = lr.wp_id
-            WHERE rmlp.isShortcut > 0';
+            WHERE rmlp.isShortcut > 0' . ($unorganized === 'yes' ? ' AND fid = -1' : '');
         $ids = $wpdb->get_col($sql);
         foreach ($ids as $id) {
             wp_delete_attachment($id, true);
         }
         
-        return new \WP_REST_Response(true);
+        return new \WP_REST_Response($sql);
     }
     
     /**
