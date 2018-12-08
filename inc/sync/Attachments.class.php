@@ -2,6 +2,7 @@
 namespace MatthiasWeb\RealMediaLibrary\WPLR\sync;
 use MatthiasWeb\RealMediaLibrary\WPLR\base;
 use MatthiasWeb\RealMediaLibrary\WPLR\general;
+use MatthiasWeb\RealMediaLibrary\attachment;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -29,14 +30,18 @@ class Attachments extends base\Base {
         
         global $wpdb;
         $table_name = $this->getTableName('posts', true);
-        $ids = $wpdb->get_col(wp_rml_create_all_children_sql(208, true, array(
-            'fields' => 'rmlp.attachment',
-            'join' => 'INNER JOIN ' . $table_name . ' rmlp ON rmldata.id = rmlp.fid'
-        )));
-        
-        // Move
-        if (count($ids) > 0) {
-            $wpdb->query($wpdb->prepare('UPDATE ' . $table_name . ' SET fid = %d WHERE attachment IN (' . implode(',', $ids) . ')', _wp_rml_root()));
+        $lrFolder = Folders::wplr2rml(-1, true);
+        if ($lrFolder !== null) {
+            $ids = $wpdb->get_col(wp_rml_create_all_children_sql($lrFolder, true, array(
+                'fields' => 'rmlp.attachment',
+                'join' => 'INNER JOIN ' . $table_name . ' rmlp ON rmldata.id = rmlp.fid'
+            )));
+            
+            // Move
+            if (count($ids) > 0) {
+                $wpdb->query($wpdb->prepare('UPDATE ' . $table_name . ' SET fid = %d WHERE attachment IN (' . implode(',', $ids) . ')', _wp_rml_root()));
+                attachment\CountCache::getInstance()->resetCountCache();
+            }
         }
     }
     

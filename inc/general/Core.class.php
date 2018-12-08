@@ -88,7 +88,7 @@ class Core extends base\Core {
         $isResetResyncQuery = defined('DOING_AJAX') && DOING_AJAX && isset($_POST['action']) && $_POST['action'] && (substr($_POST['action'], 0, strlen($query)) === $query);
         $issue3OptName = get_option(WPLR_RML_OPT_PREFIX . self::OPT_NAME_MIGRATION_ISSUE_3);
         
-        add_action('wp_ajax_wplrsync_extensions_init', array($attachments, 'resync', 9));
+        add_action('wp_ajax_wplrsync_extensions_init', array($attachments, 'resync'), 9);
         add_action('rest_api_init', array($this->getService(), 'rest_api_init'));
         
         if ($issue3OptName === self::OPT_VALUE_MIGRATION_ISSUE_3_RESYNC && !$isResetResyncQuery) {
