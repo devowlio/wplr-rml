@@ -87,10 +87,13 @@ class Core extends base\Core {
         $query = 'wplrsync_extension';
         $isResetResyncQuery = defined('DOING_AJAX') && DOING_AJAX && isset($_POST['action']) && $_POST['action'] && (substr($_POST['action'], 0, strlen($query)) === $query);
         $issue3OptName = get_option(WPLR_RML_OPT_PREFIX . self::OPT_NAME_MIGRATION_ISSUE_3);
+        
+        add_action('wp_ajax_wplrsync_extensions_init', array($attachments, 'resync', 9));
+        add_action('rest_api_init', array($this->getService(), 'rest_api_init'));
+        
         if ($issue3OptName === self::OPT_VALUE_MIGRATION_ISSUE_3_RESYNC && !$isResetResyncQuery) {
             add_action('admin_notices', array($this, 'admin_notice_migration_issue3'));
         }else{
-            add_action('rest_api_init', array($this->getService(), 'rest_api_init'));
             add_action('RML/Folder/Created', array($folders, 'folder_created'), 10, 4);
             add_action('wplr_reset', array($folders, 'reset'), 10, 0);
             add_action('wplr_create_folder', array($folders, 'create_folder'), 10, 3);
@@ -102,7 +105,6 @@ class Core extends base\Core {
             add_action('wplr_move_folder', array($folders, 'move_folder'), 10, 3);
             add_action('wplr_move_collection', array($folders, 'move_collection'), 10, 3);
     
-            add_action('wp_ajax_wplrsync_extensions_init', array($attachments, 'resync', 9));
             add_action('wplr_add_media_to_collection', array($attachments, 'add_to_collection'), 10, 2);
             add_action('wplr_remove_media_from_collection', array($attachments, 'remove_from_collection'), 10, 2);
             
