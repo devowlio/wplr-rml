@@ -25,6 +25,29 @@ class Assets extends base\Assets {
     }
     
     /**
+     * Checks if a specific screen is active.
+     * 
+     * @param string $base The base
+     * @param boolean $log If true the current screen gets logged
+     * @returns boolean
+     */
+    public function isScreenBase($base, $log = false) {
+        if (function_exists("get_current_screen")) {
+            $screen = get_current_screen();
+        }else{
+            return false;
+        }
+        
+        if ($log) error_log($screen->base);
+        
+        if (isset($screen->base)) {
+            return $screen->base == $base;
+        }else{
+            return false;
+        }
+    }
+    
+    /**
      * Localize the WordPress admin backend.
      * 
      * @returns array

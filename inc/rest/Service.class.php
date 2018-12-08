@@ -31,6 +31,11 @@ class Service extends base\Base {
             'methods' => 'DELETE',
             'callback' => array($this, 'routeDeleteShortcuts')
         ));
+        
+        register_rest_route(Service::SERVICE_NAMESPACE, '/notice/issue3', array(
+            'methods' => 'DELETE',
+            'callback' => array($this, 'routeIssue3Dismiss')
+        ));
     }
     
     /**
@@ -86,7 +91,13 @@ class Service extends base\Base {
             wp_delete_attachment($id, true);
         }
         
-        return new \WP_REST_Response($sql);
+        return new \WP_REST_Response(true);
+    }
+    
+    public function routeIssue3Dismiss($request) {
+        if (($permit = rmlRest\Service::permit()) !== null) return $permit;
+        delete_option(WPLR_RML_OPT_PREFIX . general\Core::OPT_NAME_MIGRATION_ISSUE_3);
+        return new \WP_REST_Response(true);
     }
     
     /**

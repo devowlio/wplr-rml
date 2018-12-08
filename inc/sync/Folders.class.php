@@ -49,7 +49,6 @@ class Folders extends base\Base {
     }
     
     public function reset() {
-        delete_option(WPLR_RML_OPT_PREFIX . general\Core::OPT_NAME_MIGRATION_ISSUE_3);
 		$this->remove_folder(-1);
 	}
     

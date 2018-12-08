@@ -114,7 +114,7 @@ abstract class Core extends Base {
             
             // Check if migratin notice is needed (https://git.io/fpDZi)
             if (version_compare($installed, '1.1.0', '<')) {
-                update_option(WPLR_RML_OPT_PREFIX . general\Core::OPT_NAME_MIGRATION_ISSUE_3, '1');
+                update_option(WPLR_RML_OPT_PREFIX . general\Core::OPT_NAME_MIGRATION_ISSUE_3, general\Core::OPT_VALUE_MIGRATION_ISSUE_3_RESYNC);
             }
         }
     }

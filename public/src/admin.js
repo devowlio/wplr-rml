@@ -21,3 +21,5 @@ hooks.register('tree/node', node => {
         default: break;
     }
 });
+
+hooks.register('rest/button/success/notice/issue3', () => window.location.reload());

@@ -1,6 +1,7 @@
 <?php
 namespace MatthiasWeb\RealMediaLibrary\WPLR\sync;
 use MatthiasWeb\RealMediaLibrary\WPLR\base;
+use MatthiasWeb\RealMediaLibrary\WPLR\general;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); // Avoid direct file request
 
@@ -13,6 +14,30 @@ class Attachments extends base\Base {
     
     public function __construct() {
         $this->root = _wp_rml_root();
+    }
+    
+    /**
+     * Move all the shortcuts / original files of the WP/LR folder to the
+     * Unogranized folder. This can be done directly in the database to avoid
+     * action calls (resync should usually rollback to the original destination).
+     */
+    public function resync() {
+        $issue3OptName = WPLR_RML_OPT_PREFIX . general\Core::OPT_NAME_MIGRATION_ISSUE_3;
+        if (get_option($issue3OptName) === general\Core::OPT_VALUE_MIGRATION_ISSUE_3_RESYNC) {
+            update_option($issue3OptName, general\Core::OPT_VALUE_MIGRATION_ISSUE_3_DELETE_SHORTCUTS);
+        }
+        
+        global $wpdb;
+        $table_name = $this->getTableName('posts', true);
+        $ids = $wpdb->get_col(wp_rml_create_all_children_sql(208, true, array(
+            'fields' => 'rmlp.attachment',
+            'join' => 'INNER JOIN ' . $table_name . ' rmlp ON rmldata.id = rmlp.fid'
+        )));
+        
+        // Move
+        if (count($ids) > 0) {
+            $wpdb->query($wpdb->prepare('UPDATE ' . $table_name . ' SET fid = %d WHERE attachment IN (' . implode(',', $ids) . ')', _wp_rml_root()));
+        }
     }
     
     private function syncSort($rmlFolder) {

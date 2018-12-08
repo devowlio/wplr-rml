@@ -31,6 +31,8 @@ class Core extends base\Core {
      * @see https://git.io/fpDZi
      */
     const OPT_NAME_MIGRATION_ISSUE_3 = '_issue2migration';
+    const OPT_VALUE_MIGRATION_ISSUE_3_RESYNC = 'needs_resync';
+    const OPT_VALUE_MIGRATION_ISSUE_3_DELETE_SHORTCUTS = 'delete_shortcuts';
     
     /**
      * Application core constructor.
@@ -84,7 +86,8 @@ class Core extends base\Core {
         
         $query = 'wplrsync_extension';
         $isResetResyncQuery = defined('DOING_AJAX') && DOING_AJAX && isset($_POST['action']) && $_POST['action'] && (substr($_POST['action'], 0, strlen($query)) === $query);
-        if (get_option(WPLR_RML_OPT_PREFIX . self::OPT_NAME_MIGRATION_ISSUE_3) !== false && !$isResetResyncQuery) {
+        $issue3OptName = get_option(WPLR_RML_OPT_PREFIX . self::OPT_NAME_MIGRATION_ISSUE_3);
+        if ($issue3OptName === self::OPT_VALUE_MIGRATION_ISSUE_3_RESYNC && !$isResetResyncQuery) {
             add_action('admin_notices', array($this, 'admin_notice_migration_issue3'));
         }else{
             add_action('rest_api_init', array($this->getService(), 'rest_api_init'));
@@ -99,17 +102,23 @@ class Core extends base\Core {
             add_action('wplr_move_folder', array($folders, 'move_folder'), 10, 3);
             add_action('wplr_move_collection', array($folders, 'move_collection'), 10, 3);
     
+            add_action('wp_ajax_wplrsync_extensions_init', array($attachments, 'resync', 9));
             add_action('wplr_add_media_to_collection', array($attachments, 'add_to_collection'), 10, 2);
             add_action('wplr_remove_media_from_collection', array($attachments, 'remove_from_collection'), 10, 2);
             
             add_filter('RPM/Queue/Added/Process', array($attachments, 'rpm_instant_process'), 10, 2);
+            
+            // Only show when necessary (option, is media library)
+            if ($issue3OptName === self::OPT_VALUE_MIGRATION_ISSUE_3_DELETE_SHORTCUTS) {
+                add_action('admin_notices', array($this, 'admin_notice_migration_issue3_delete_shortcuts'));
+            }
         }
     }
     
     public function options() {
         add_settings_field(
             'rml_wplr_button_reset_shortcuts',
-            '<label for="rml_wplr_button_reset_shortcuts">'.__('WP/LR shortcut files' , RML_TD ).'</label>' ,
+            '<label for="rml_wplr_button_reset_shortcuts" id="rml_wplr_button_reset_shortcuts">'.__('WP/LR shortcut files' , RML_TD ).'</label>' ,
             array($this, 'html_rml_wplr_button_reset_shortcuts'),
             'media',
             'rml_options_reset'
@@ -126,12 +135,24 @@ class Core extends base\Core {
             $link = admin_url('admin.php?page=wplr-extensions-menu');
         	echo '<div class=\'notice notice-error\'>
 			    <p>Thanks for updating <strong>WP/LR Sync Folders (MatthiasWeb)</strong> extension for WP/LR Sync. This update contains breaking-changes because the synchronization was built-in a "wrong" mechanism.
-			    Due to several feedback I became attentive to this. Now I beg you to <strong>reset and resync</strong> the WP/LR extensions - until this is happened the synchronization between Real
+			    Due to several feedback I became attentive to this. Now I beg you to <strong>resync (not reset)</strong> the WP/LR extensions - until this is happened the synchronization between Real
 			    Media Library (RML) and WP/LR is paused (Lightroom synchronization still works). This process may take a while.</p>
-			    <p><strong>Why breaking-changes?</strong> The old synchronization between RML and WP/LR always creates a duplicate image when moving into a RML folder. After you have reset and resynced
+			    <p><strong>Why breaking-changes?</strong> The old synchronization between RML and WP/LR always creates a duplicate image when moving into a RML folder. After you have resynced
 			    the extensions, the original images gets moved to the correct RML folder, and the duplicate shortcuts gets moved to "Unorganized". If you have used the shortcuts in your posts and pages, do a little check if everything is okay.</p>
-			    <p><a href="' . $link . '">Reset and resync extension</a> &middot; <a href="https://git.io/fpDZi" target="_blank">Read more about the issue (external link)</a></p>
+			    <p><a href="' . $link . '">Resync extension</a> &middot; <a href="https://git.io/fpDZi" target="_blank">Read more about the issue (external link)</a></p>
 			    <p>I apologize that this happened and you now have to do some rework - but developers aren\'t perfect either.</p>
+			</div>';
+        }
+    }
+    
+    public function admin_notice_migration_issue3_delete_shortcuts() {
+        if (current_user_can('manage_options') && $this->getAssets()->isScreenBase('upload')) {
+            $link = admin_url('options-media.php#rml-rml_wplr_button_reset_shortcuts');
+        	echo '<div class=\'notice notice-error\'>
+			    <p>You have just resynced your WP/LR structure with Real Media Library. Perhaps you see a lot of shortcuts in "Unorganized" or "All files" now, which are not more
+			    needed for WP/LR sync. I recommened to check this shortcuts if you use them in any posts / pages and then you can delete them. Otherwise you can directly delete them
+			    in the reset options.</p>
+			    <p><a href="' . $link . '">Go to Reset options</a> &middot; <a href="#" class="rml-rest-button" data-url="notice/issue3" data-method="DELETE" data-urlnamespace="wplr-rml/v1">Dismiss this notice</a></p>
 			</div>';
         }
     }
