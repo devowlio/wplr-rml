@@ -3,7 +3,7 @@ Contributors: mguenter, TigrouMeow
 Tags: lightroom, image, gallery, media, photo, export, management, admin, sync, synchronization, real media library, add-on
 Requires at least: 4.4
 Requires PHP: 5.4.0
-Tested up to: 4.9
+Tested up to: 5.0.1
 Stable tag: trunk
 
 Displays the hierarchy of folders and collections nicely on the left side of your Media Library by syncing with the Real Media Library plugin.
