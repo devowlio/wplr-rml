@@ -44,6 +44,9 @@ The extension creates shortcuts only when necessary. That means a shortcut is cr
 
 == Changelog ==
 
+= 1.1.1 =
+* Show migration message only when previously used an older version of the plugin
+
 = 1.1 =
 * Real Media Library v4.0.10 is now required as minimum version
 * Fixed the synchronization mechanism and create only shortcuts when needed (see https://github.com/matzeeable/wplr-rml/issues/2)
