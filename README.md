@@ -44,6 +44,9 @@ The extension creates shortcuts only when necessary. That means a shortcut is cr
 
 == Changelog ==
 
+= 1.1.2 =
+* Prepare for Real Media Librar v4.6
+
 = 1.1.1 =
 * Show migration message only when previously used an older version of the plugin
 

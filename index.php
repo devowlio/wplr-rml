@@ -6,7 +6,7 @@
  * Description: 	Displays the hierarchy of folders and collections nicely on the left side of your Media Library
  * Author:          Matthias Günter <support@matthias-web.com>
  * Author URI:		https://matthias-web.com
- * Version: 		1.1.1
+ * Version: 		1.1.2
  * Text Domain:		wplr-rml
  * Domain Path:		/languages
  */
