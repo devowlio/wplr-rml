@@ -13,7 +13,8 @@ abstract class Base {
 	 * @returns boolean
 	 */
 	public function rmlVersionReached() {
-	    return defined('RML_VERSION') && version_compare(RML_VERSION, WPLR_RML_MIN_RML, '>=');
+	    $isPro = defined('RML_IS_PRO') ? RML_IS_PRO : true;
+	    return defined('RML_VERSION') && version_compare(RML_VERSION, WPLR_RML_MIN_RML, '>=') && $isPro;
 	}
 	
 	/**
