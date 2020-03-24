@@ -1,69 +1,89 @@
-=== WP/LR Sync Folders ===
-Contributors: mguenter, TigrouMeow
-Tags: lightroom, image, gallery, media, photo, export, management, admin, sync, synchronization, real media library, add-on, wplr-extension
+=== WP/LR Sync Folders with Real Media Library ===
+Contributors: devowl, mguenter, TigrouMeow
+Tags: wp/lr sync, lightroom sync, real media library, lightroom, synchronization, sync, export, image, gallery, photo, management, wplr-extension
 Requires at least: 4.4
 Requires PHP: 5.4.0
 Tested up to: 5.4
 Stable tag: trunk
 
-Displays the hierarchy of folders and collections nicely on the left side of your Media Library by syncing with the Real Media Library plugin.
+Synchronize your folders and collections in Real Media Library (Media Library Folders for WordPress) with Lightroom (with the help of WP/LR Sync).
 
 == Description ==
-Synchronize your photos, collections, keywords and metadata between Lightroom and WordPress Real Media Library. Any changes in your Lightroom will be replicated in your WordPress media library folder structure.
+Synchronize your photos, collections, keywords, and metadata between Lightroom and [WordPress Real Media Library](https://devowl.io/wordpress-real-media-library/). All changes in your Lightroom are replicated in the folder structure of your WordPress Media Library.
 
-**INSTALLATION**. This plugin requires the WP/LR Sync plugin for Lightroom and WordPress Real Media Library. They are available here: [WP/LR Sync at Meow Apps](https://meowapps.com/wplr-sync) and [WP Real Media Library](https://codecanyon.net/item/wordpress-real-media-library-media-categories-folders/13155134).
+== Requirements =
 
-**GALLERIES BASED ON YOUR LIGHTROOM COLLECTIONS**. When the Lightroom hierarchy and attachments are synced with your WordPress installation you are able to generate dynamic galleries on your posts and pages.
+This plugin is an add-on that allows you to use the following plugins together, which must be installed:
 
-**Main features:**
-- Add folders / collections automatically
-- Remove and move folders / collections automatically
-- Put an image in multiple collections
-- Respect LR image order
-- Own folder Icons in your folder structure
+- [WP/LR Sync](https://meowapps.com/wplr-sync)
+- [Real Media Library](https://devowl.io/go/codecanyon/real-media-library?source=wp-lr-sync-folders-wordpress-org)
 
-Official WP/LR FAQ: [here](https://meowapps.com/wplr-sync/faq). If you are a developer you can have a look at the GitHub repository for this Add-On [here](https://github.com/matzeeable/wplr-rml).
+=== Features ===
+
+- Add folders/collections automatically
+- Remove and move folders/collections automatically
+- Inserting an Image into multiple collections
+- Respect the Lightroom image order
+- Custom folder icons in your folder structure
+- Galleries based on your Lightroom collections: When the Lightroom hierarchy and attachments are synchronized with your WordPress installation, you can generate dynamic galleries on your posts and pages
+
+== Further links ==
+
+If you want to learn more, have a problem or if you are a developer, the following links are for you:
+
+- [WP/LR FAQ](https://meowapps.com/wplr-sync/faq)
+- [Real Media Library Knowledge Base](https://help.devowl.io/kb/real-media-library)
+- [devowl.io support (for Real Media Library and this plugin)](https://devowl.io/support/)
+- [Git repository of WP/LR Sync Folders at GitHub](https://github.com/matzeeable/wplr-rml)
 
 == Installation ==
 
-1. Upload `wplr-rml` to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Install the Lightroom plugin from here: https://meowapps.com/wplr-sync
-4. Install the WP Real Media Library plugin from: [WP Real Media Library](https://codecanyon.net/item/wordpress-real-media-library-media-categories-folders/13155134)
-5. Synchronize everything :)
+1. Go to your WordPress backend
+2. Navigate to "Plugins" > "Add New"
+3. Search for "WP/LR Sync Folders"
+4. Install and activate the plugin
+5. Install [WP/LR Sync from Meow Apps](https://meowapps.com/wplr-sync)
+6. Install [Real Media Library from devowl.io](https://devowl.io/go/codecanyon/real-media-library?source=wp-lr-sync-folders-wordpress-org)
+7. Synchronize everything :)
 
 == Frequently Asked Questions ==
-= I used the previous Real Media Library extension =
-If you have used already the built-in WP Real Media Library extension you navigate to `WP/LR Sync` > `Extensions`. Make sure you have still ticked "Real Media Library" in extensions and click the button `Reset with Extensions`. This does remove all the RML folders which where already synced with your media library (it does not delete attachments from WP itself). Afterwards untick the RML extension, save, activate the `WP/LR Sync Folders` plugin and do `Resync with Extensions`.
 
 = Total Sync shows shortcut as not linked =
-If you use Total Sync it shows shortcuts as unlinked. Do not worry about this - a LR id may only be associated with one attachment within WordPress.
+When you use Total Sync, it shows shortcuts as unlinked. Don't worry about this - a Lightroom ID can only be linked to one attachment in WordPress.
 
 = I see a lot of shortcuts, how can I delete them? =
-The extension creates shortcuts only when necessary. That means a shortcut is created when an image is put into multiple collections. But if you want to delete them make sure you have Real Media Library and this extension active: Navigate to Settings > Media Tab "Reset" and click "Delete WP/LR shortcuts".
+The extension only creates links when necessary. This means that a shortcut is created when an image is added to multiple collections. However, if you want to delete it, make sure that the Real Media Library and this extension are active: Navigate to Settings > Media "Reset" tab and click "Delete WP/LR Shortcuts".
 
 == Changelog ==
 
 = 1.1.2 =
-* Prepare for Real Media Librar v4.6
+
+- Prepare for Real Media Library v4.6
+- Updated plugin description
 
 = 1.1.1 =
-* Show migration message only when previously used an older version of the plugin
+
+- Show migration message only when previously used an older version of the plugin
 
 = 1.1 =
-* Real Media Library v4.0.10 is now required as minimum version
-* Fixed the synchronization mechanism and create only shortcuts when needed (see https://github.com/matzeeable/wplr-rml/issues/2)
+
+- Real Media Library v4.0.10 is now required as minimum version
+- Fixed the synchronization mechanism and create only shortcuts when needed (see https://github.com/matzeeable/wplr-rml/issues/2)
 
 = 1.0.2 =
-* PHP 5.4 is now the minimum required PHP version
-* Prepared compatibility with Real Physical Media
+
+- PHP 5.4 is now the minimum required PHP version
+- Prepared compatibility with Real Physical Media
 
 = 1.0.1 =
-* Fixed bug with custom sorting issues
+
+- Fixed bug with custom sorting issues
 
 = 1.0 =
-* First release.
+
+- First release.
 
 == Screenshots ==
+
 1. The Lightroom publish services...
-2. ... is automatically synchronized with your Media Library
+2. ...is automatically synchronized with your media library
