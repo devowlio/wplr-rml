@@ -1,11 +1,11 @@
 <?php
 /**
  * @wordpress-plugin
- * Plugin Name: 	WP/LR Sync Folders
+ * Plugin Name: 	WP/LR Sync Folders with Real Media Library
  * Plugin URI:		https://wordpress.org/plugins/wplr-sync-folders/
- * Description: 	Displays the hierarchy of folders and collections nicely on the left side of your Media Library
- * Author:          Matthias Günter <support@matthias-web.com>
- * Author URI:		https://matthias-web.com
+ * Description: 	Synchronize your folders and collections in Real Media Library (Media Library Folders for WordPress) with Lightroom (with the help of WP/LR Sync).
+ * Author:          Matthias Günter (devowl.io GmbH)
+ * Author URI:		https://devowl.io/
  * Version: 		1.1.2
  * Text Domain:		wplr-rml
  * Domain Path:		/languages

@@ -1,6 +1,6 @@
 === WP/LR Sync Folders with Real Media Library ===
 Contributors: devowl, mguenter, TigrouMeow
-Tags: wp/lr sync, lightroom sync, real media library, lightroom, synchronization, sync, export, image, gallery, photo, management, wplr-extension
+Tags: wp/lr sync, lightroom sync, real media library, lightroom, synchronization, sync, export, image, gallery, photo, management, wplr-extension, micro add-on
 Requires at least: 4.4
 Requires PHP: 5.4.0
 Tested up to: 5.4
